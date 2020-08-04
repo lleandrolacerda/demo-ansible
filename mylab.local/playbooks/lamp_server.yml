@@ -1,0 +1,35 @@
+# ## Instalação do servidor LAMP no servidor webserver
+- hosts: webserver
+  vars:
+  tasks:
+   - name: Limpando o cache do Yum
+     shell: yum clean all
+
+   - name: Instalando o Servidor web
+     yum:
+      name: httpd
+      state: latest
+
+   - name: Adcionando Regra de Firewall para permitir acesso externo
+     shell: firewall-cmd --add-service=http --add-service=https --permanent
+ 
+   - name: Reiniciando o Firewall Deamon
+     shell: firewall-cmd --reload
+
+   - name: Iniciando o Servidor web
+     service:
+      name: httpd
+      state: restarted 
+
+   - name: Instalando o PHP
+     yum: 
+      name: 
+      - php-mysql
+      - php-common
+      - php-mysql
+      - php-xml
+      - php-xmlrpc
+      - php-mbstring
+      - php-curl
+      - php-zip
+      state: present

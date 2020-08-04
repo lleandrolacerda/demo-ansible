@@ -1,0 +1,34 @@
+# Este playbook configura parametros de maquina, são eles
+# - hostname
+# - Instalando pacotes basicos
+# - Atualização de pacotes
+# - NTP server e Timezone
+# - compartilhamento
+# - usuários
+
+- hosts: all
+  vars:  
+  tasks:
+   - name: Configurando o hostname das maquinas
+     hostname:
+       name: "{{ inventory_hostname }}"
+  
+   - name: Instalando Pacotes, Vim Editor e Net-tools
+     yum:
+      name:
+      - vim
+      - net-tools
+      - curl
+      - wget
+      - git
+      - chrony
+      state: present
+  
+   - name: upgrade all packages
+     yum:
+      name: '*'
+      state: latest
+ 
+   - name: Configurando o Timezone do servidor
+     shell: timedatectl set-timezone America/Sao_Paulo
+

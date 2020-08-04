@@ -1,0 +1,20 @@
+# NTP Install
+- hosts: netserver
+  tasks:
+  - name: Permitir trafego NTP atraves da politica de firewall
+    shell: firewall-cmd --add-service=ntp --permanent
+
+  - name: Firewall Reaload
+    shell: firewall-cmd --reload
+
+  - name: Certificar que o Chrony esta iniciado
+    service: name=chronyd state=started enabled=yes
+    tags: chrony
+
+  - name: Configurando o Timezone do servidor
+    shell: timedatectl set-timezone America/Sao_Paulo
+  
+  - name: Instalalando o NTP Server no servidor
+    yum: name=ntp state=present
+    tags: ntp
+

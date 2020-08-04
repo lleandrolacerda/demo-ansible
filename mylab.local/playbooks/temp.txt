@@ -1,0 +1,27 @@
+- name: Wordpress Installation
+  hosts: webserver
+  become: yes
+  vars:
+   wp_mysql_db: wordpress
+   wp_mysql_user: wp-admin
+   wp_mysql_password: tensult
+   wp_mysql_host: "{{ansible_default_ipv4.address}}"
+  tasks:
+  - name: LAMP installation
+    yum: name={{ item }} state=present
+    with_items:
+     - httpd24
+     - mysql-server
+     - php56
+     - php56-mysqlnd
+     - MySQL-python27
+  - name: Removing httpd welcome page from webserver
+    file:
+      path: "/etc/httpd/conf.d/welcome.conf"
+      state: absent
+  - name: Downloading wordpress to document root of remote nodes
+    unarchive:
+      src: http://www.wordpress.org/latest.tar.gz
+      dest: /var/www/html/
+      remote_src: yes
+
