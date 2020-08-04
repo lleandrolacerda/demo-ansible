@@ -48,7 +48,7 @@
          instance_type: "{{ flavor }}"
          image: "{{ image }}"
          wait: yes
-         region: "{{ regiao }}"
+         region: "{{ region }}"
          count: "{{ count }}"
        register: ec2
      
