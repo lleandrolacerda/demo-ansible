@@ -10,8 +10,8 @@
      security_group: apache-sg
      image: ami-098f16afa9edf40be
      #region: us-east-1
-     region: "{{ regiao }}"
-     keypair_name: ec2_key
+     region: "{{ region }}"
+     keypair_name: aws_keypair
      count: 1
 
    tasks:  
