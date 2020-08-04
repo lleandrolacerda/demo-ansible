@@ -1,0 +1,23 @@
+---
+ - name: Instalação do IIS Web Server
+   hosts: all
+   
+   tasks:
+     - name: Instalação IIS
+       win_feature:
+         name: Web-Server
+         state: present
+         
+     - name: Iniciar o serviço IIS
+       win_service:
+         name: W3Svc
+         state: started
+         
+     - name: Criar o website index.html
+       win_copy:
+         src: index.html
+         dest: C:\Inetpub\wwwroot\index.html
+         
+     - name: Mostrar o endereço
+       debug:
+         msg: http://{{ ansible_host }}

@@ -1,0 +1,62 @@
+---
+- name: Basic machine post configurations
+  hosts: all
+  tasks:
+
+  - name: Creating Suporte group
+    group:
+      name: suporte
+      state: present
+
+  - name: Adding user Manutenção
+    user:
+      name: Manutencao
+      comment: Administrador
+      uid: 1040
+      group: suporte
+
+  - name: Setting SELinux in permissive mode
+    selinux:
+      policy: targeted
+      state: permissive
+      
+  - name: Installing Firewalld
+    yum:
+      name: firewalld
+      state: latest
+      
+  - name: Check if Firewall is running
+    service:
+      name: firewalld
+      state: started
+      enabled: yes
+  
+  - name: Configuring Firewall Ports and Services
+    firewalld:
+      port: 10050/tcp
+      permanent: yes
+      state: enabled
+      
+      
+  - name: Configuring Firewall Ports and Services for HTTPS
+    firewalld:
+      service: https
+      permanent: yes
+      state: enabled
+      
+  - name: Configuring Firewall Ports and Services for HTTP
+    firewalld:
+      service: http
+      permanent: yes
+      state: enabled
+
+  - name: Restart Firewall
+    service:
+      name: firewalld
+      state: restarted
+
+  - name: Configuring SSH service
+    firewalld:
+      service: ssh
+      permanent: yes
+      state: enable
